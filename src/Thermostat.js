@@ -1,45 +1,59 @@
 'use strict';
 
 class Thermostat {
-    temperature = 20;
-    minimumTemp = 10;
-    powerSavingMode = "On";
-    
-
-    up() {
-        if (this.powerSavingMode == "On" && this.temperature < 25) {
-            this.temperature += 1;
-        } else if (this.powerSavingMode == "Off" && this.temperature < 32) {
-            this.temperature += 1;
-        }
+  constructor() {
+    this.DEFAULT_TEMPERATURE = 20;
+    this.temperature = this.DEFAULT_TEMPERATURE;
+    this.powerSavingMode = true;
+    this.MINIMUM_TEMPERATURE = 10;
+    this.MAX_LIMIT_PSM_ON = 25;
+    this.MAX_LIMIT_PSM_OFF = 32;
+    this.MEDIUM_ENERGY_USAGE_LIMIT = 18;
+    this.HIGH_ENERGY_USAGE_LIMIT = 25;
+  }
+  getCurrentTemperature(){
+    return this.temperature;
+  }
+  up(){
+    if (this.isMaximumTemperature()){
+      return;
     }
-
-    down() {
-        if (this.temperature == this.minimumTemp) {
-            return;
-        }
-            this.temperature -= 1;
+    this.temperature += 1
+  }
+  down(){
+    if (this.isMinimumTemperature()){
+      return;
     }
-
-    switch() {
-        if (this.powerSavingMode == "On") {
-            this.powerSavingMode = "Off";
-        } else if (this.powerSavingMode == "Off") {
-            this.powerSavingMode == "On";
-        }
+    this.temperature -= 1
+  }
+  isMaximumTemperature(){
+    if (this.isPowerSavingModeOn() === false) {
+      return this.temperature === this.MAX_LIMIT_PSM_OFF;
     }
-
-    reset() {
-        this.temperature = 20;
+    return this.temperature === this.MAX_LIMIT_PSM_ON;
+  }
+  isMinimumTemperature(){
+    return this.temperature === this.MINIMUM_TEMPERATURE;
+  }
+  isPowerSavingModeOn(){
+    return this.powerSavingMode === true;
+  }
+  switchPowerSavingModeOff(){
+    this.powerSavingMode = false;
+  }
+  switchPowerSavingModeOn(){
+    this.powerSavingMode = true;
+  }
+  resetTemperature(){
+    this.temperature = this.DEFAULT_TEMPERATURE;
+  }
+  energyUsage() {
+    if (this.temperature < this.MEDIUM_ENERGY_USAGE_LIMIT) {
+      return 'low-usage';
     }
-
-    energyUsage() {
-        if(this.temperature < 18) {
-            return "Low-usage";
-        } if (this.temperature <= 25) {
-            return "Medium-usage";
-        }
-        return "High-usage";
+    if (this.temperature <= this.HIGH_ENERGY_USAGE_LIMIT) {
+      return 'medium-usage';
     }
-
+    return 'high-usage';
+  }
 }
