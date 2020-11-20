@@ -19,23 +19,20 @@ $(document).ready(function() {
 
   $('#powersaving-on').click(function() {
     thermostat.switchPowerSavingModeOn();
-    $('#power-saving').text('on')
+    $('#power-saving').text('ON')
     updateTemperature();
   });
 
   $('#powersaving-off').click(function() {
     thermostat.switchPowerSavingModeOff();
-    $('#power-saving').text('off')
+    $('#power-saving').text('OFF')
     updateTemperature();
   });
 
   function updateTemperature() {
     $('#temperature').text(thermostat.temperature);
     $('#temperature').attr('class', thermostat.energyUsage());
-
+    $('#energy-usage').attr('class', thermostat.energyUsage());
+    $('#energy-usage').text(thermostat.energyUsage());
   }
 });
-
-
-// $("#energy-usage").attr('class', thermostat.getEnergyUsage());
-//  $("#energy-usage").text(thermostat.getEnergyUsage());
